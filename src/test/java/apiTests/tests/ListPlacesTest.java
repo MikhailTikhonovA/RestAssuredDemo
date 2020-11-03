@@ -10,16 +10,16 @@ import utill.*;
 
 @Tag("API")
 @Owner("Tikhonov Mikhail")
-@Feature("Проверка количества аэропортов в городе Москва")
-public class DifferentPlacesTest extends BaseTest {
+@Feature("Проверка get ListPlaces")
+public class ListPlacesTest extends BaseTest {
 
     @Test
     @DisplayName("Проверка количества аэропортов в городе Москва")
-    @Description("Проверка ответа с 6 аэропортами")
+    @Description("Проверка ответа с 6 аэропортами и аэропортом Moscow Sheremetyevo")
     void checkAirportCounts() {
         sendRequest(URIs.URI_BASE, Paths.PATH_LIST_PLACES);
-        setParamsDestination(Queries.Moscow, Countries.RU, Currencies.RUB, Localies.EN_GB);
+        setParamsDestination(Queries.Moscow, Countries.Russia, Currencies.RUB, Localies.EN_GB);
         validateStatusCode(200);
-        getPlacesAsPojo().checkCountAirports(6);
+        getPlacesAsPojo().checkCountAirports(6).checkAirports("Moscow Sheremetyevo");
     }
 }

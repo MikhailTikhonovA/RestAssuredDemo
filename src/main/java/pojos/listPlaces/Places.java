@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,4 +43,18 @@ public class Places {
         Assertions.assertEquals(places.size(), numbers);
         return this;
     }
+
+    @Step("Проверить наличие PlaceName: \"Moscow Sheremetyevo\" ")
+    public Places checkAirports(String placeName) {
+        boolean result = false;
+        for (Place p: this.places) {
+            if(p.getPlaceName().equals(placeName)){
+                result = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(result, "Ответ не содержит " + placeName);
+        return this;
+    }
+
 }
