@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,21 +40,24 @@ public class Places {
 
     @Step("Проверить количество аэропортов в городе \"{numbers}\"")
     public Places checkCountAirports(int numbers) {
-        Assertions.assertEquals(places.size(), numbers);
+        Assertions.assertEquals(places.size(), numbers, "Количество аэропортов в городе не соответствует ожидаемому");
         return this;
     }
 
-    @Step("Проверить наличие PlaceName: \"Moscow Sheremetyevo\" ")
+    @Step("Проверить наличие PlaceName: \"{placeName}\" ")
     public Places checkAirports(String placeName) {
-        boolean result = false;
-        for (Place p: this.places) {
-            if(p.getPlaceName().equals(placeName)){
-                result = true;
-                break;
-            }
-        }
-        Assertions.assertTrue(result, "Ответ не содержит " + placeName);
+        boolean isExist = places.stream().anyMatch(place -> place.getPlaceName().equals(placeName));
+        Assertions.assertTrue(isExist, "Ответ не содержит " + placeName);
         return this;
     }
+
+    @Step("Проверить страну в каждом из блоков \"{country}\"")
+    public Places checkCountryInAnswer(String country) {
+        boolean result = places.stream().allMatch(place -> place.getCountryName().equals(country));
+        Assertions.assertTrue(result, "Ответ содержит другие страны кроме " + country);
+        return this;
+    }
+
+
 
 }

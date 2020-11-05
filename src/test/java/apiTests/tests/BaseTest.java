@@ -10,6 +10,7 @@ import utill.Paths;
 import utill.PrivateData;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static specifications.RqRsSpecifications.getRequestSpecification;
 import static specifications.RqRsSpecifications.getResponseSpecification;
 
@@ -37,6 +38,13 @@ public class BaseTest {
     public ValidatableResponse validateStatusCode(Integer statusCode) {
         validatableResponse = response.then()
                 .spec(getResponseSpecification(statusCode));
+        return validatableResponse;
+    }
+
+    @Step("Проверить ответ по схеме \"{scheme}\"")
+    public ValidatableResponse validateScheme(String scheme) {
+        validatableResponse = response.then()
+                .assertThat().body(matchesJsonSchemaInClasspath(scheme));
         return validatableResponse;
     }
 

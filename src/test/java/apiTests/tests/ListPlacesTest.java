@@ -22,4 +22,19 @@ public class ListPlacesTest extends BaseTest {
         validateStatusCode(200);
         getPlacesAsPojo().checkCountAirports(6).checkAirports("Moscow Sheremetyevo");
     }
+
+    @Test
+    @DisplayName("Валидация ответа по схеме")
+    @Description("Валидация ответа по схеме")
+    void checkSchemasAndCountryName() {
+        sendRequest(URIs.URI_BASE, Paths.PATH_LIST_PLACES);
+        setParamsDestination(Queries.Berlin, Countries.Germany, Currencies.EUR, Localies.EN_GB);
+        validateStatusCode(200);
+        validateScheme("ListPlaces.json");
+        getPlacesAsPojo().checkCountryInAnswer("Germany");
+    }
+
+
+
+
 }
